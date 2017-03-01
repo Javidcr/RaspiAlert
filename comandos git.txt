@@ -1,0 +1,14 @@
+#pasos para subir al servidor remoto
+git add *
+
+git commit -m "Primer commit"
+
+git push origin master
+
+
+
+# para actualizar desde el ultimo commit
+git pull
+
+
+http://rogerdudler.github.io/git-guide/index.es.html
