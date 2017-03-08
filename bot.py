@@ -254,10 +254,10 @@ def tarFotos(m):
         bot.send_message(cid, "Comprimiendo fotos...")
         print(color.BLUE + "[+] Comprimiendo fotos..." + color.ENDC)
         bot.send_chat_action(cid, 'typing')
-        os.system("tar -cvf /tmp/timelapse.tar /tmp/*.jpg")
+        os.system("tar -cvf /tmp/timelapse.zip /tmp/*.jpg")
         bot.send_message(cid, "Fotos comprimidas. Enviando...")
         bot.send_chat_action(cid, 'upload_document')
-        tar = open('/tmp/timelapse.tar', 'rb')
+        tar = open('/tmp/timelapse.zip', 'rb')
         bot.send_document(cid, tar)
         print(color.BLUE + " [+] Fotos Enviadas!!" + color.ENDC)
         userStep[cid] = 0
