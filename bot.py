@@ -16,7 +16,7 @@ knownUsers = []
 commands = {
               'start': 'Arranca el bot',
               'ayuda': 'Comandos disponibles',
-              'exec': 'Ejecuta un comando'
+              'exe': 'Ejecuta un comando'
 }
 
 menu = types.ReplyKeyboardMarkup()
@@ -67,11 +67,7 @@ bot.set_update_listener(listener)
 def command_start(m):
     cid = m.chat.id
     userStep[cid] = 0
-    bot.send_message(cid, "Wake up " + str(m.chat.first_name) + "...")
-    time.sleep(1)
-    bot.send_message(cid, "Fwhibbit has you...")
-    time.sleep(1)
-    bot.send_message(cid, "Follow the white rabbit...\n", reply_markup=menu)
+    bot.send_message(cid, "Usuario conectado: " + str(m.chat.first_name))
 
 
 # AYUDA
@@ -87,14 +83,14 @@ def command_help(m):
 
 
 # EXEC COMANDO
-@bot.message_handler(commands=['exec'])
+@bot.message_handler(commands=['exe'])
 def command_exec(m):
     cid = m.chat.id
-    if cid == "331109269":  # SUSTITUIR
-        bot.send_message(cid, "Ejecutando: " + m.text[len("/exec"):])
+    if cid == 331109269:  # SUSTITUIR
+        bot.send_message(cid, "Ejecutando: " + m.text[len("/exe"):])
         bot.send_chat_action(cid, 'typing')
         time.sleep(2)
-        f = os.popen(m.text[len("/exec"):])
+        f = os.popen(m.text[len("/exe"):])
         result = f.read()
         bot.send_message(cid, "Resultado: " + result)
     else:
@@ -175,7 +171,7 @@ def info_opt(m):
 def cam_opt(m):
         cid = m.chat.id
         text = m.text
-        if "331109269" == "331109269":  # SUSTITUIR
+        if cid == 331109269:  # SUSTITUIR
             if text == "Foto":  # FOTO
                 bot.send_message(cid, "Tomando foto ...")
                 bot.send_chat_action(cid, 'upload_photo')
