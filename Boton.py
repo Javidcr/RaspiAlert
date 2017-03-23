@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import RPi.GPIO as GPIO
+import commands
 
 BtnPin = 11
 Gpin   = 12
@@ -25,6 +26,7 @@ def Print(x):
 		print '    ***********************'
 		print '    *   Button Pressed!   *'
 		print '    ***********************'
+                resultado = commands.getoutput('./start.sh')
 
 def detect(chn):
 	Led(GPIO.input(BtnPin))
