@@ -4,8 +4,8 @@ import time
 
 def setup():
 	LCD1602.init(0x27, 1)	# init(slave address, background light)
-	LCD1602.write(0, 0, ' Alex')
-	LCD1602.write(1, 1, 'la chupa')
+	LCD1602.write(0, 0, ' # RaspiAlert #')
+	LCD1602.write(1, 1, '##############')
 	time.sleep(2)
 
 def loop():
