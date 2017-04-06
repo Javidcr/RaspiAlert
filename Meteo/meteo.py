@@ -136,7 +136,7 @@ def main():
 
 def destroy():
         LCD1602.clear()
-	GPIO.cleanup()
+	#GPIO.cleanup()
 
 if __name__ == '__main__':
 	try:
