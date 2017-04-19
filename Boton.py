@@ -9,7 +9,6 @@ import os
 BtnPin = 35
 Gpin   = 32
 Rpin   = 37
-control = 0
 
 def setup():
         GPIO.setwarnings(False)
@@ -23,9 +22,7 @@ def Led(x):
 	if x == 0:
 		GPIO.output(Rpin, 1)
 		GPIO.output(Gpin, 0)
-		if control == 0:
-                        os.system('./raspialert.sh')
-                        control = 1
+                os.system('./raspialert.sh')
 	if x == 1:
 		GPIO.output(Rpin, 0)
 		GPIO.output(Gpin, 1)
@@ -34,9 +31,8 @@ def Led(x):
 def Print(x):
 	if x == 0:
 		print '    ***********************'
-		print '    * ¡Sistema arrancado! *'
+		print '    * ¡Botón presionado!  *'
 		print '    ***********************'
-                #resultado = commands.getoutput('./raspialert.sh')
 
 def detect(chn):
 	Led(GPIO.input(BtnPin))

@@ -1,0 +1,1 @@
+timex = strftime("%d-%m-%Y %H:%M:%S", gmtime())

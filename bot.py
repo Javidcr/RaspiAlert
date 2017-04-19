@@ -139,8 +139,9 @@ def info_opt(m):
             if cid == 331109269:  # SUSTITUIR
                 bot.send_message(cid, "[+] Activando alarma...")
                 print(color.BLUE + "[+] Activando alarma..." + color.ENDC)
+                bot.send_message(cid, "  [i]   Activada!, tiene 30 seg para abandonar la habitación...")
+                time.sleep(30)
                 os.system('./start.sh')
-                bot.send_message(cid, "  [i]   Activada!")
             else:
                 bot.send_message(cid, " ¡¡PERMISO DENEGADO!!")
                 print(color.RED + " ¡¡PERMISO DENEGADO!! " + color.ENDC)
@@ -150,7 +151,7 @@ def info_opt(m):
             if cid == 331109269:  # SUSTITUIR
                 bot.send_message(cid, "[+] Leyendo datos...")
                 print(color.BLUE + "[+] Leyendo datos..." + color.ENDC)
-                lectura = open('Meteo/temp','r')
+                lectura = open('temp','r')
                 bot.send_message(cid,"[i] %s" % lectura.read())
                 print ("  [i]   %s " % lectura.read())
                 lectura.close()

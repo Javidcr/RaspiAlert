@@ -38,7 +38,7 @@ def enviar_foto():
 def setup():
     GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
     GPIO.setwarnings(False)
-    GPIO.setup(pirInput, GPIO.IN)         #Read output GPIO 21 from PIR motion sensor
+    GPIO.setup(pirInput, GPIO.IN, GPIO.PUD_DOWN)         #Read output GPIO 21 from PIR motion sensor
 
 def detect_movement():
     
