@@ -1,3 +1,8 @@
-#pdi=""
-#pdiof python | tee $pdi
-killall python
+#!/bin/bash
+
+read pid < pid ;
+
+echo $pid;
+kill -9 $pid;
+#killall python
+exit 0;

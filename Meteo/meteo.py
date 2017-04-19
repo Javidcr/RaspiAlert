@@ -1,14 +1,7 @@
-'''
-**********************************************************************
-* Filename    : dht11.py
-* Description : test for SunFoudner DHT11 humiture & temperature module
-* Author      : Dream
-* Brand       : SunFounder
-* E-mail      : service@sunfounder.com
-* Website     : www.sunfounder.com
-* Update      : Dream    2016-09-30    New release
-**********************************************************************
-'''
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#Autores: Fco Javier del Castillo y Carlos Suárez
 import RPi.GPIO as GPIO
 import LCD1602
 import time
@@ -29,7 +22,7 @@ def setup():
 	LCD1602.init(0x27, 1)	# init(slave address, background light)
 	LCD1602.write(0, 0, ' # RaspiAlert #')
 	LCD1602.write(1, 1, '##############')
-	time.sleep(2)
+	time.sleep(3)
 	
 def read_dht11_dat():
 	GPIO.setup(DHTPIN, GPIO.OUT)
@@ -90,6 +83,9 @@ def read_dht11_dat():
 				continue
 	if len(lengths) != 40:
 		print "NA"
+		LCD1602.clear()
+		LCD1602.write(0, 0, ' # RaspiAlert #')
+		LCD1602.write(1, 1, '  Data error')
 		return False
 
 	shortest_pull_up = min(lengths)
@@ -118,12 +114,15 @@ def read_dht11_dat():
 	checksum = (the_bytes[0] + the_bytes[1] + the_bytes[2] + the_bytes[3]) & 0xFF
 	if the_bytes[4] != checksum:
 		print "NA"
+		LCD1602.clear()
+		LCD1602.write(0, 0, ' # RaspiAlert #')
+		LCD1602.write(1, 1, '  Data error')
 		return False
 
 	return the_bytes[0], the_bytes[2]
 
 def main():
-	print "Raspberry Pi wiringPi DHT11 Temperature test program\n"
+	print "Arrancado el modulo meteo\n"
 	LCD1602.clear()
 	while True:
 		result = read_dht11_dat()
@@ -131,12 +130,15 @@ def main():
 			humidity, temperature = result
 			LCD1602.write(0, 0, ' # RaspiAlert #')
                         LCD1602.write(1, 1, 'H= %s%% T= %s C' % (humidity, temperature))
-			print "humidity: %s %%, Temperature: %s C`" % (humidity, temperature)
-		time.sleep(20)
+                        texto = "Humedad: %s %%, Temperatura: %s C" % (humidity, temperature)
+			print texto
+			lectura = open('temp','w')
+			lectura.write(texto)
+			lectura.close()
+		time.sleep(5)
 
 def destroy():
         LCD1602.clear()
-	#GPIO.cleanup()
 
 if __name__ == '__main__':
 	try:

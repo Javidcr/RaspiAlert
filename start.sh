@@ -1,4 +1,5 @@
-python bot.py&
+#!/bin/bash
+python Presencia/alarma.py&
 PID=$!
-echo $PID | tee pid.txt
+echo $PID | tee pid
 exit 0

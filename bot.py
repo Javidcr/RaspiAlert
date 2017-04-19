@@ -20,15 +20,15 @@ commands = {
 }
 
 menu = types.ReplyKeyboardMarkup()
-menu.add("RPinfo", "Camara")
+menu.add("Menu", "Camara")
 
 cam_menu = types.ReplyKeyboardMarkup()
 cam_menu.add("Foto", "Timelapse")
 cam_menu.add("Atras")
 
 info_menu = types.ReplyKeyboardMarkup()
-info_menu.add("TEMP", "HD")
-info_menu.add("RAM", "CPU")
+info_menu.add("TEMP_Sistema", "Activar")
+info_menu.add("TEMP_Habitacion", "Desactivar")
 info_menu.add("Atras")
 
 
@@ -103,8 +103,8 @@ def command_exec(m):
 def main_menu(m):
     cid = m.chat.id
     text = m.text
-    if text == "RPinfo":  # RPINFO
-        bot.send_message(cid, "Informacion disponible:", reply_markup=info_menu)
+    if text == "Menu":  # RPINFO
+        bot.send_message(cid, "Acciones disponibles:", reply_markup=info_menu)
         userStep[cid] = 1
     elif text == "Camara":  # CAMARA
         bot.send_message(cid, "Opciones de la camara:", reply_markup=cam_menu)
@@ -121,9 +121,9 @@ def main_menu(m):
 def info_opt(m):
         cid = m.chat.id
         txt = m.text
-        if txt == "TEMP":  # TEMP
-            bot.send_message(cid, "[+] TEMPERATURAS")
-            print(color.BLUE + "[+] TEMPERATURAS" + color.ENDC)
+        if txt == "TEMP_Sistema":  # TEMP
+            bot.send_message(cid, "[+] Leyendo datos...")
+            print(color.BLUE + "[+] Leyendo datos..." + color.ENDC)
             # cpu temp
             tempFile = open( "/sys/class/thermal/thermal_zone0/temp" )
             cpu_temp = tempFile.read()
@@ -135,30 +135,39 @@ def info_opt(m):
             gpu_temp = os.popen('/opt/vc/bin/vcgencmd measure_temp').read().split("=")[1][:-3]
             bot.send_message(cid, "  [i]   GPU: %s" % gpu_temp)
             print(color.GREEN + " [i] GPU: %s" % gpu_temp + color.ENDC)
-        elif txt == "HD":  # HD
-            bot.send_message(cid, "[+] DISCO DURO")
-            print(color.BLUE + "[+] DISCO DURO" + color.ENDC)
-            bot.send_message(cid, "  [i]   Total: %s" % diskSpace()[0])
-            print(color.GREEN + " [i] Total: %s" % diskSpace()[0] + color.ENDC)
-            bot.send_message(cid, "  [i]   Usado: %s" % diskSpace()[1])
-            print(color.GREEN + " [i] Usado: %s" % diskSpace()[1] + color.ENDC)
-            bot.send_message(cid, "  [i]   Disponible: %s" % diskSpace()[2])
-            print(color.GREEN + " [i] Disponible: %s" % diskSpace()[2] + color.ENDC)
-        elif txt == "RAM":  # RAM
-            bot.send_message(cid, "[+] MEMORIA RAM")
-            print(color.BLUE + "[+] MEMORIA RAM" + color.ENDC)
-            bot.send_message(cid, "  [i]   Total: %s" % ramInfo()[0])
-            print(color.GREEN + " [i] Total: %s" % ramInfo()[0] + color.ENDC)
-            bot.send_message(cid, "  [i]   Usado: %s" % ramInfo()[1])
-            print(color.GREEN + " [i] Usado: %s" % ramInfo()[1] + color.ENDC)
-            bot.send_message(cid, "  [i]   Disponible: %s" % ramInfo()[2])
-            print(color.GREEN + " [i] Disponible: %s" % ramInfo()[2] + color.ENDC)
-        elif txt == "CPU":  # CPU
-            bot.send_message(cid, "[+] CPU")
-            print(color.BLUE + "[+] CPU" + color.ENDC)
-            cpu = os.popen('mpstat | grep -A 5 "%idle" | tail -n 1 | awk -F " " \'{print 100 - $ 12}\'a').read()
-            bot.send_message(cid, "  [i]   Usado: %s" % cpu)
-            print(color.GREEN + " [i] Usado: %s" % cpu + color.ENDC)
+        elif txt == "Activar":  # Activar la alarma
+            if cid == 331109269:  # SUSTITUIR
+                bot.send_message(cid, "[+] Activando alarma...")
+                print(color.BLUE + "[+] Activando alarma..." + color.ENDC)
+                os.system('./start.sh')
+                bot.send_message(cid, "  [i]   Activada!")
+            else:
+                bot.send_message(cid, " ¡¡PERMISO DENEGADO!!")
+                print(color.RED + " ¡¡PERMISO DENEGADO!! " + color.ENDC)
+            
+            
+        elif txt == "TEMP_Habitacion":  # Temperatura del sensor
+            if cid == 331109269:  # SUSTITUIR
+                bot.send_message(cid, "[+] Leyendo datos...")
+                print(color.BLUE + "[+] Leyendo datos..." + color.ENDC)
+                lectura = open('Meteo/temp','r')
+                bot.send_message(cid,"[i] %s" % lectura.read())
+                print ("  [i]   %s " % lectura.read())
+                lectura.close()
+            else:
+                bot.send_message(cid, " ¡¡PERMISO DENEGADO!!")
+                print(color.RED + " ¡¡PERMISO DENEGADO!! " + color.ENDC)
+            
+        elif txt == "Desactivar":  # Desactivar la alarma
+            if cid == 331109269:  # SUSTITUIR
+                bot.send_message(cid, "[+] Desactivando alarma...")
+                print(color.BLUE + "[+] Desactivando alarma..." + color.ENDC)
+                os.system('./stop.sh')
+                bot.send_message(cid, "  [i]   Desactivada!")
+            else:
+                bot.send_message(cid, " ¡¡PERMISO DENEGADO!!")
+                print(color.RED + " ¡¡PERMISO DENEGADO!! " + color.ENDC)
+            
         elif txt == "Atras":  # ATRAS
             userStep[cid] = 0
             bot.send_message(cid, "Menu Principal:", reply_markup=menu)
@@ -190,28 +199,6 @@ def cam_opt(m):
         else:
             bot.send_message(cid, " ¡¡PERMISO DENEGADO!!")
             print(color.RED + " ¡¡PERMISO DENEGADO!! " + color.ENDC)
-
-
-# INFO HD
-def diskSpace():
-    p = os.popen("df -h /")
-    i = 0
-    while 1:
-        i += 1
-        line = p.readline()
-        if i == 2:
-            return(line.split()[1:5])
-
-
-# INFO RAM
-def ramInfo():
-    p = os.popen('free -o -h')
-    i = 0
-    while 1:
-        i += 1
-        line = p.readline()
-        if i == 2:
-            return(line.split()[1:4])
 
 
 # TIMELAPSE

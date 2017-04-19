@@ -14,9 +14,9 @@ import LCD1602
 TOKEN = "372274168:AAGZUERMxg4yh-WSheggBdhxbVLhubntyTo"
 
 BtnPin = 37
-Gpin   = 12
-Rpin   = 13
-pirInput = 32
+#Gpin   = 12
+#Rpin   = 13
+pirInput = 40
 
 DHTPIN = 11
 
@@ -30,6 +30,7 @@ STATE_INIT_PULL_UP = 2
 STATE_DATA_FIRST_PULL_DOWN = 3
 STATE_DATA_PULL_UP = 4
 STATE_DATA_PULL_DOWN = 5
+
 
 # COLOR TEXTO
 class color:
@@ -54,11 +55,11 @@ def enviar_foto():
 
 def setup():
     GPIO.setwarnings(False)
-    GPIO.setup(pirInput, GPIO.IN)         #Read output GPIO 12 from PIR motion sensor
+    GPIO.setup(pirInput, GPIO.IN)         #Read output GPIO 21 from PIR motion sensor
 
     #Button and LED setup
-    GPIO.setup(Gpin, GPIO.OUT)     # Set Green Led Pin mode to output
-    GPIO.setup(Rpin, GPIO.OUT)     # Set Red Led Pin mode to output
+    #GPIO.setup(Gpin, GPIO.OUT)     # Set Green Led Pin mode to output
+    #GPIO.setup(Rpin, GPIO.OUT)     # Set Red Led Pin mode to output
     GPIO.setup(BtnPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)    # Set BtnPin's mode is input, and pull up to high level(3.3V)
     GPIO.add_event_detect(BtnPin, GPIO.BOTH, callback=detect, bouncetime=200)
 
@@ -167,41 +168,45 @@ def detect_movement():
              print "Intruder detected",i
              enviar_foto()
              time.sleep(1)
-def Led(x):
-    if x == 0:
-	GPIO.output(Rpin, 1)
-	GPIO.output(Gpin, 0)
-    if x == 1:
-	GPIO.output(Rpin, 0)
-	GPIO.output(Gpin, 1)
+#def Led(x):
+#    if x == 0:
+#	GPIO.output(Rpin, 1)
+#	GPIO.output(Gpin, 0)
+#    if x == 1:
+#	GPIO.output(Rpin, 0)
+#	GPIO.output(Gpin, 1)
 
 def Print(x):
 	if x == 0:
+            #if ActivarAlarma == 0:
 		print '    ***********************'
 		print '    *   Button Pressed!   *'
 		print '    ***********************'
-		
+		LCD1602.clear()
                 LCD1602.write(0, 0, ' # RaspiAlert #')
                 LCD1602.write(1, 1, 'Alarma activada')
                 time.sleep(3)
-		detect_movement()
+                LCD1602.write(1, 1, 'Tiene 30s...   ')
+                time.sleep(30)
+                LCD1602.clear()
+                detect_movement()
 		
 def detect(chn):
-	Led(GPIO.input(BtnPin))
+	#Led(GPIO.input(BtnPin))
 	Print(GPIO.input(BtnPin))
 	
-def loop():
-	while True:
-		pass
+#def loop():
+#	while True:
+#		pass
 
 def destroy():
-	GPIO.output(Gpin, GPIO.HIGH)       # Green led off
-	GPIO.output(Rpin, GPIO.HIGH)       # Red led off
+	#GPIO.output(Gpin, GPIO.HIGH)       # Green led off
+	#GPIO.output(Rpin, GPIO.HIGH)       # Red led off
 	GPIO.cleanup()                     # Release resource
 	LCD1602.clear()
 
 def main():
-	print "Raspberry Pi wiringPi DHT11 Temperature test program\n"
+	print "Bienvenido al sistema RaspiAlert\n"
 	LCD1602.clear()
 	while True:
 		result = read_dht11_dat()
@@ -210,7 +215,7 @@ def main():
 			LCD1602.write(0, 0, ' # RaspiAlert #')
                         LCD1602.write(1, 1, 'H= %s%% T= %s C' % (humidity, temperature))
 			print "humidity: %s %%, Temperature: %s C`" % (humidity, temperature)
-		time.sleep(20)
+			time.sleep(5)
 
              
 if __name__ == '__main__':
