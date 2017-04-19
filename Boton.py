@@ -1,12 +1,18 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#Autores: Fco Javier del Castillo y Carlos Suárez
 import RPi.GPIO as GPIO
 import commands
+import os
 
-BtnPin = 11
-Gpin   = 12
-Rpin   = 13
+BtnPin = 35
+Gpin   = 32
+Rpin   = 37
+control = 0
 
 def setup():
+        GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
 	GPIO.setup(Gpin, GPIO.OUT)     # Set Green Led Pin mode to output
 	GPIO.setup(Rpin, GPIO.OUT)     # Set Red Led Pin mode to output
@@ -17,16 +23,20 @@ def Led(x):
 	if x == 0:
 		GPIO.output(Rpin, 1)
 		GPIO.output(Gpin, 0)
+		if control == 0:
+                        os.system('./raspialert.sh')
+                        control = 1
 	if x == 1:
 		GPIO.output(Rpin, 0)
 		GPIO.output(Gpin, 1)
+		os.system('./raspialert_stop.sh')
 
 def Print(x):
 	if x == 0:
 		print '    ***********************'
-		print '    *   Button Pressed!   *'
+		print '    * ¡Sistema arrancado! *'
 		print '    ***********************'
-                resultado = commands.getoutput('./start.sh')
+                #resultado = commands.getoutput('./raspialert.sh')
 
 def detect(chn):
 	Led(GPIO.input(BtnPin))
