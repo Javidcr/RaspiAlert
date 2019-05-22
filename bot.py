@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#Autores: Fco Javier del Castillo y Carlos Suárez
+#Autor: Fco Javier del Castillo Ramírez
 
 import telebot
 from telebot import types
