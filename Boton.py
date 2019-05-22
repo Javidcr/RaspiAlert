@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#Autores: Fco Javier del Castillo y Carlos Suárez
 import RPi.GPIO as GPIO
 import commands
 import os
