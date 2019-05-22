@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#Autores: Fco Javier del Castillo y Carlos Suárez
-
 import RPi.GPIO as GPIO
 import telebot
 from telebot import types
 import time
 import os
+import subprocess
 
 # Ponemos nuestro Token generado con el @BotFather
 TOKEN = "372274168:AAGZUERMxg4yh-WSheggBdhxbVLhubntyTo"
@@ -30,10 +29,17 @@ def enviar_foto():
     try:
         foto = "/home/pi/webcam/" + (time.strftime("%H%M%S-%d%m%y")) + ".jpeg"
         os.system('fswebcam -r 1280x720  %s' % foto)
-        bot.send_photo(cid, open(foto, 'rb'))
+        #bot.send_photo(cid, open(foto, 'rb'))
+        send_image(cid, foto)
         print(color.BLUE + " [i] Foto enviada!!" + color.ENDC)
     except NameError:
         bot.send_message(cid, "La cámara no está conectada...")
+
+#SEND PHOTO
+def send_image(chat_id, imageFile):
+    command = 'curl -s -X POST https://api.telegram.org/bot' + str(TOKEN) + '/sendPhoto -F chat_id=' + str(chat_id) + " -F photo=@" + str(imageFile)
+    subprocess.call(command.split(' '))
+    return
 
 def setup():
     GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location

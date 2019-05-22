@@ -5,6 +5,7 @@ import telebot
 from telebot import types
 import time
 import os
+import subprocess
 
 TOKEN = "372274168:AAGZUERMxg4yh-WSheggBdhxbVLhubntyTo"  # SUSTITUIR
 
@@ -185,7 +186,8 @@ def cam_opt(m):
                 bot.send_chat_action(cid, 'upload_photo')
                 foto = "/home/pi/webcam/" + (time.strftime("%H%M%S-%d%m%y")) + ".jpeg"
                 os.system('fswebcam -r 1280x720  %s' % foto)
-                bot.send_photo(cid, open(foto, 'rb'))
+                #bot.send_photo(cid, open(foto, 'rb'))
+                send_image(cid, foto)
                 print(color.BLUE + " [i] Foto enviada!!" + color.ENDC)
             elif text == "Timelapse":  # TIMELAPSE
                 bot.send_message(cid, "Nº Fotos?: ")
@@ -227,6 +229,12 @@ def timelapse(m):
         bot.register_next_step_handler(m, timelapse)
         return
 
+
+#SEND PHOTO
+def send_image(chat_id, imageFile):
+    command = 'curl -s -X POST https://api.telegram.org/bot' + str(TOKEN) + '/sendPhoto -F chat_id=' + str(chat_id) + " -F photo=@" + str(imageFile)
+    subprocess.call(command.split(' '))
+    return
 
 # TAR FOTOS
 def tarFotos(m):
