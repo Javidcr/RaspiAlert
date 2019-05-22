@@ -11,7 +11,7 @@ import os
 TOKEN = "372274168:AAGZUERMxg4yh-WSheggBdhxbVLhubntyTo"  # SUSTITUIR
 
 userStep = {}
-knownUsers = []
+knownUsers = [331109269]
 
 commands = {
               'start': 'Arranca el bot',
@@ -86,7 +86,7 @@ def command_help(m):
 @bot.message_handler(commands=['exe'])
 def command_exec(m):
     cid = m.chat.id
-    if cid == 331109269:  # SUSTITUIR
+    if cid in knownUsers:  # SUSTITUIR
         bot.send_message(cid, "Ejecutando: " + m.text[len("/exe"):])
         bot.send_chat_action(cid, 'typing')
         time.sleep(2)
@@ -136,7 +136,7 @@ def info_opt(m):
             bot.send_message(cid, "  [i]   GPU: %s" % gpu_temp)
             print(color.GREEN + " [i] GPU: %s" % gpu_temp + color.ENDC)
         elif txt == "Activar":  # Activar la alarma
-            if cid == 331109269:  # SUSTITUIR
+            if cid in knownUsers:  # SUSTITUIR
                 bot.send_message(cid, "[+] Activando alarma...")
                 print(color.BLUE + "[+] Activando alarma..." + color.ENDC)
                 bot.send_message(cid, "  [i]   Activada!, tiene 30 seg para abandonar la habitación...")
@@ -148,7 +148,7 @@ def info_opt(m):
             
             
         elif txt == "TEMP_Habitacion":  # Temperatura del sensor
-            if cid == 331109269:  # SUSTITUIR
+            if cid in knownUsers:  # SUSTITUIR
                 bot.send_message(cid, "[+] Leyendo datos...")
                 print(color.BLUE + "[+] Leyendo datos..." + color.ENDC)
                 lectura = open('temp','r')
@@ -160,7 +160,7 @@ def info_opt(m):
                 print(color.RED + " ¡¡PERMISO DENEGADO!! " + color.ENDC)
             
         elif txt == "Desactivar":  # Desactivar la alarma
-            if cid == 331109269:  # SUSTITUIR
+            if cid in knownUsers:  # SUSTITUIR
                 bot.send_message(cid, "[+] Desactivando alarma...")
                 print(color.BLUE + "[+] Desactivando alarma..." + color.ENDC)
                 os.system('./stop.sh')
@@ -181,7 +181,7 @@ def info_opt(m):
 def cam_opt(m):
         cid = m.chat.id
         text = m.text
-        if cid == 331109269:  # SUSTITUIR
+        if cid in knownUsers:  # SUSTITUIR
             if text == "Foto":  # FOTO
                 bot.send_message(cid, "Tomando foto ...")
                 bot.send_chat_action(cid, 'upload_photo')
