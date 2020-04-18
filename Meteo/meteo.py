@@ -128,8 +128,8 @@ def main():
 		if result:
 			humidity, temperature = result
 			LCD1602.write(0, 0, ' # RaspiAlert #')
-                        LCD1602.write(1, 1, 'H= %s%% T= %s C' % (humidity, temperature))
-                        texto = "Humedad: %s %%, Temperatura: %s C" % (humidity, temperature)
+            LCD1602.write(1, 1, 'H= %s%% T= %s C' % (humidity, temperature))
+            texto = "Humedad: %s %%, Temperatura: %s C" % (humidity, temperature)
 			print texto
 			lectura = open('temp','w')
 			lectura.write(texto)
@@ -141,7 +141,7 @@ def destroy():
 
 if __name__ == '__main__':
 	try:
-                setup()
+        setup()
 		main()
 	except KeyboardInterrupt:
-		destroy() 
+		destroy()
